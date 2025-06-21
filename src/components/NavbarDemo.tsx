@@ -43,7 +43,6 @@ export function NavbarDemo({ children }: { children: React.ReactNode }) {
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             />
           </MobileNavHeader>
-
           <MobileNavMenu isOpen={isMobileMenuOpen}>
             {navItems.map((item, idx) => (
               <a
