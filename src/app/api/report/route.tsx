@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/db";
 import Report from "@/models/Report";
 
+// Create a new report
 export async function POST(req: NextRequest) {
   try {
     await connectDB();
@@ -29,8 +30,8 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// read store data
-export async function GET(req: NextRequest) {
+// Get all reports
+export async function GET() {
   try {
     await connectDB();
     const reports = await Report.find({}).sort({ createdAt: -1 });
@@ -41,4 +42,3 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: err.message || "Server Error" }, { status: 500 });
   }
 }
-
