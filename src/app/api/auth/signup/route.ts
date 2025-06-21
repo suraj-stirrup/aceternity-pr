@@ -1,14 +1,19 @@
-// src/app/api/auth/signup/route.ts
 import User from "@/models/User";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import connectDB from "@/lib/db";
 
-export async function POST(req: Request) {
+interface SignupBody {
+  name: string;
+  email: string;
+  password: string;
+}
+
+export async function POST(req: NextRequest) {
   try {
     await connectDB();
 
-    const { name, email, password } = await req.json();
+    const { name, email, password }: SignupBody = await req.json();
 
     if (!email || !password || !name) {
       return NextResponse.json({ error: "All fields are required." }, { status: 400 });
@@ -28,15 +33,19 @@ export async function POST(req: Request) {
       password: hashedPassword,
     });
 
-    return NextResponse.json({
-      message: "User registered successfully.",
-      user: {
-        id: newUser._id,
-        name: newUser.name,
-        email: newUser.email,
+    return NextResponse.json(
+      {
+        message: "User registered successfully.",
+        user: {
+          id: newUser._id,
+          name: newUser.name,
+          email: newUser.email,
+        },
       },
-    }, { status: 201 });
-  } catch (err: any) {
+      { status: 201 }
+    );
+  } catch (error) {
+    const err = error as Error;
     return NextResponse.json({ error: err.message || "Server error." }, { status: 500 });
   }
 }

@@ -1,12 +1,18 @@
 import connectDB from "@/lib/db";
 import User from "@/models/User";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: Request) {
+interface SignUpRequestBody {
+  email: string;
+  password: string;
+  name: string;
+}
+
+export async function POST(req: NextRequest) {
   try {
     await connectDB();
 
-    const { email, password, name } = await req.json();
+    const { email, password, name }: SignUpRequestBody = await req.json();
 
     if (!email || !password) {
       return NextResponse.json({ error: "Email and password are required" }, { status: 400 });
@@ -19,8 +25,13 @@ export async function POST(req: Request) {
     }
 
     const newUser = await User.create({ email, password, name });
-    return NextResponse.json({ message: "User signed in successfully", user: newUser }, { status: 201 });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+
+    return NextResponse.json(
+      { message: "User signed up successfully", user: newUser },
+      { status: 201 }
+    );
+  } catch (error) {
+    const err = error as Error;
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }

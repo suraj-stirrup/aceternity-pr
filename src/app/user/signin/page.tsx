@@ -1,6 +1,6 @@
-import SignIn from "@/components/Signin";
+// import SignIn from "@/components/Signin";
 import { SigninFormDemo } from "@/components/SigninFormDemo";
-import { Input } from "@/components/ui/input";
+// import { Input } from "@/components/ui/input";
 import React from "react";
 
 export default function SignUpPage() {

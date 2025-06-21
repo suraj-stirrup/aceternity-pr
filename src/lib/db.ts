@@ -1,15 +1,23 @@
-//mongodb connection
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-const connectDB = async () => {
+let isConnected = false; // Prevent multiple connections in dev
+
+const connectDB = async (): Promise<void> => {
+  if (isConnected) return;
+
   try {
-    await mongoose.connect(process.env.MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
+    const uri = process.env.MONGODB_URI as string;
+    if (!uri) throw new Error("MONGODB_URI is not defined in environment variables");
+
+    await mongoose.connect(uri, {
+      dbName: "your-db-name", // Optional: specify your DB name
     });
-    console.log("Connected to MongoDB");
+
+    isConnected = true;
+    console.log("✅ Connected to MongoDB");
   } catch (error) {
-    console.error("Error connecting to MongoDB:", error);
+    console.error("❌ MongoDB connection error:", error);
+    throw error;
   }
 };
 
