@@ -16,7 +16,7 @@ import DummyContent from "./DummyContent";
 
 export function NavbarDemo({ children }: { children: React.ReactNode }) {
   const navItems = [
-    { name: "Features", link: "/sitemap" },
+    { name: "Sitemap", link: "/sitemap" },
     { name: "Pricing", link: "#pricing" },
     { name: "Contact", link: "#contact" },
   ];

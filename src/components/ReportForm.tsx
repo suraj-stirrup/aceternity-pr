@@ -33,14 +33,47 @@ export default function ReportForm() {
     qc: "",
   });
 
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form data submitted:", formData);
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/report", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await res.json();
+
+      if (!res.ok) {
+        alert(`❌ Error: ${result.error}`);
+      } else {
+        alert("✅ Report submitted successfully!");
+        setFormData({
+          title: "",
+          companyName: "",
+          date: "",
+          pdfName: "",
+          content: "",
+          design: "",
+          production: "",
+          qc: "",
+        });
+      }
+    } catch (err) {
+      console.error("Submission failed:", err);
+      alert("❌ Something went wrong. Try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -48,7 +81,7 @@ export default function ReportForm() {
       onSubmit={handleSubmit}
       className="max-w-3xl mx-auto p-6 bg-white rounded-2xl shadow-md space-y-6 mt-20"
     >
-      <h2 className="text-2xl font-bold text-gray-800 text-cente">Report Entry Form</h2>
+      <h2 className="text-2xl font-bold text-gray-800 text-center">Report Entry Form</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <InputField label="Title" name="title" value={formData.title} onChange={handleChange} />
@@ -69,9 +102,10 @@ export default function ReportForm() {
 
       <button
         type="submit"
-        className="w-full bg-blue-600 text-white py-2 px-4 rounded-xl hover:bg-blue-700 transition-colors"
+        className="w-full bg-blue-600 text-white py-2 px-4 rounded-xl hover:bg-blue-700 transition-colors disabled:opacity-60"
+        disabled={loading}
       >
-        Submit Report
+        {loading ? "Submitting..." : "Submit Report"}
       </button>
     </form>
   );
