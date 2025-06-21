@@ -11,7 +11,6 @@ import {
   MobileNavMenu,
 } from "@/components/ui/resizable-navbar";
 import { useState } from "react";
-// import Link from "next/link";
 import DummyContent from "./DummyContent";
 
 export function NavbarDemo({ children }: { children: React.ReactNode }) {
@@ -67,13 +66,9 @@ export function NavbarDemo({ children }: { children: React.ReactNode }) {
         </MobileNav>
       </Navbar>
 
-      {/* Inject dynamic page content here */}
       <div className="container mx-auto px-4 py-8">{children}</div>
 
-      {/* Static Demo Content */}
-      <DummyContent/>
-
+      <DummyContent />
     </div>
   );
 }
-
