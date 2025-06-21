@@ -1,4 +1,5 @@
 "use client";
+
 import {
   Navbar,
   NavBody,
@@ -43,7 +44,7 @@ export function NavbarDemo({ children }: { children: React.ReactNode }) {
             />
           </MobileNavHeader>
 
-          <MobileNavMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)}>
+          <MobileNavMenu isOpen={isMobileMenuOpen}>
             {navItems.map((item, idx) => (
               <a
                 key={`mobile-link-${idx}`}
