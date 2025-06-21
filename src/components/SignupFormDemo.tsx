@@ -1,9 +1,9 @@
 "use client";
+
 import React, { useState } from "react";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { cn } from "@/lib/utils";
-import { IconBrandGithub, IconBrandGoogle, IconBrandOnlyfans } from "@tabler/icons-react";
 
 export function SignupFormDemo() {
   const [formData, setFormData] = useState({
@@ -57,22 +57,46 @@ export function SignupFormDemo() {
         <div className="mb-4 flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2">
           <LabelInputContainer>
             <Label htmlFor="firstname">First name</Label>
-            <Input id="firstname" placeholder="Tyler" type="text" onChange={handleChange} value={formData.firstname} />
+            <Input
+              id="firstname"
+              placeholder="Tyler"
+              type="text"
+              onChange={handleChange}
+              value={formData.firstname}
+            />
           </LabelInputContainer>
           <LabelInputContainer>
             <Label htmlFor="lastname">Last name</Label>
-            <Input id="lastname" placeholder="Durden" type="text" onChange={handleChange} value={formData.lastname} />
+            <Input
+              id="lastname"
+              placeholder="Durden"
+              type="text"
+              onChange={handleChange}
+              value={formData.lastname}
+            />
           </LabelInputContainer>
         </div>
 
         <LabelInputContainer className="mb-4">
           <Label htmlFor="email">Email Address</Label>
-          <Input id="email" placeholder="projectmayhem@fc.com" type="email" onChange={handleChange} value={formData.email} />
+          <Input
+            id="email"
+            placeholder="projectmayhem@fc.com"
+            type="email"
+            onChange={handleChange}
+            value={formData.email}
+          />
         </LabelInputContainer>
 
         <LabelInputContainer className="mb-4">
           <Label htmlFor="password">Password</Label>
-          <Input id="password" placeholder="••••••••" type="password" onChange={handleChange} value={formData.password} />
+          <Input
+            id="password"
+            placeholder="••••••••"
+            type="password"
+            onChange={handleChange}
+            value={formData.password}
+          />
         </LabelInputContainer>
 
         <button
