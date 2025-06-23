@@ -68,7 +68,7 @@ export function NavbarDemo({ children }: { children: React.ReactNode }) {
 
       <div className="container mx-auto px-4 py-8">{children}</div>
 
-      <DummyContent />
+      {/* <DummyContent /> */}
     </div>
   );
 }
