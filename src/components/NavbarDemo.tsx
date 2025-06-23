@@ -12,7 +12,7 @@ import {
   MobileNavMenu,
 } from "@/components/ui/resizable-navbar";
 import { useState } from "react";
-import DummyContent from "./DummyContent";
+// import DummyContent from "./DummyContent";
 
 export function NavbarDemo({ children }: { children: React.ReactNode }) {
   const navItems = [
