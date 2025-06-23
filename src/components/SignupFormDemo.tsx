@@ -39,6 +39,10 @@ export function SignupFormDemo() {
         setMessage(data.error || "Signup failed.");
       } else {
         setMessage("✅ Signup successful!");
+        // after sign up redirect to login after one second
+        setTimeout(() => {
+          window.location.href = "/user/signin";
+        }, 1000);
       }
     } catch (err) {
       console.error(err);
