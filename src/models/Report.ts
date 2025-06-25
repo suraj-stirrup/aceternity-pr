@@ -9,6 +9,7 @@ export interface IReport extends Document {
   design: string;
   production: string;
   qc: string;
+  mediaUrl?: string; // ✅ Optional media URL
 }
 
 const ReportSchema = new Schema<IReport>({
@@ -20,6 +21,8 @@ const ReportSchema = new Schema<IReport>({
   design: { type: String, required: true },
   production: { type: String, required: true },
   qc: { type: String, required: true },
+  mediaUrl: { type: String }, // ✅ Added mediaUrl field
 });
 
 export default models.Report || mongoose.model<IReport>("Report", ReportSchema);
+

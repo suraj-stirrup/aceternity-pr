@@ -3,7 +3,7 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import { FileUploadDemo } from "./FileUploadDemo";
 
-interface FormData {
+interface FormDataFields {
   title: string;
   companyName: string;
   date: string;
@@ -16,14 +16,14 @@ interface FormData {
 
 interface InputFieldProps {
   label: string;
-  name: keyof FormData;
+  name: keyof FormDataFields;
   value: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   type?: string;
 }
 
 export default function ReportForm() {
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<FormDataFields>({
     title: "",
     companyName: "",
     date: "",
@@ -34,6 +34,7 @@ export default function ReportForm() {
     qc: "",
   });
 
+  const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -46,10 +47,20 @@ export default function ReportForm() {
     setLoading(true);
 
     try {
+      const body = new FormData();
+
+      // Append all fields to FormData
+      Object.entries(formData).forEach(([key, value]) => {
+        body.append(key, value);
+      });
+
+      if (file) {
+        body.append("file", file);
+      }
+
       const res = await fetch("/api/report", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body,
       });
 
       const result = await res.json();
@@ -68,10 +79,11 @@ export default function ReportForm() {
           production: "",
           qc: "",
         });
+        setFile(null);
       }
     } catch (err) {
-      console.error("Submission failed:", err);
-      alert("❌ Something went wrong. Try again.");
+      console.error("❌ Submission error:", err);
+      alert("❌ Failed to submit report.");
     } finally {
       setLoading(false);
     }
@@ -82,15 +94,19 @@ export default function ReportForm() {
       onSubmit={handleSubmit}
       className="max-w-3xl mx-auto p-6 bg-white rounded-2xl shadow-md space-y-6 mt-20"
     >
-      <h2 className="text-2xl font-bold text-gray-800 text-center">Report Entry Form</h2>
+      <h2 className="text-2xl font-bold text-gray-800 text-center">
+        Report Entry Form
+      </h2>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <InputField label="Title" name="title" value={formData.title} onChange={handleChange} />
         <InputField label="Company Name" name="companyName" value={formData.companyName} onChange={handleChange} />
         <InputField label="Date" name="date" value={formData.date} onChange={handleChange} type="date" />
         <InputField label="PDF Name" name="pdfName" value={formData.pdfName} onChange={handleChange} />
+
         <div className="md:col-span-2">
-            <FileUploadDemo />
-          </div>
+          <FileUploadDemo onUploaded={(file) => setFile(file)} />
+        </div>
       </div>
 
       <fieldset className="border border-gray-200 p-4 rounded-lg">
@@ -114,13 +130,7 @@ export default function ReportForm() {
   );
 }
 
-function InputField({
-  label,
-  name,
-  value,
-  onChange,
-  type = "text",
-}: InputFieldProps) {
+function InputField({ label, name, value, onChange, type = "text" }: InputFieldProps) {
   return (
     <div>
       <label className="block mb-1 text-sm font-medium text-gray-700">{label}</label>
